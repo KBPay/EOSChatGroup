@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Group</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
+
+    <style>
+        .s-item {
+            width: 208px;
+            float: left;
+            background-color: #f0f2f5;
+            margin-right: 10px;
+            padding: 8px;
+        }
+
+        .s-item dt {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            text-align: center;
+        }
+
+        .s-item dd {
+            overflow: hidden;
+            word-break: break-all;
+            height: 70px;
+            width: 100%;
+        }
+
+        .user-item {
+            background: #F2F5F9;
+            padding: 10px 5px 10px 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .user-item.selected {
+            background: #D2E6F9;
+        }
+
+        .msg-header .title {
+            padding-top: 15px;
+            padding-left: 15px;
+        }
+
+        .msg ul .chat-mine {
+            text-align: right;
+            padding-left: 0;
+            padding-right: 6px;
+        }
+
+        .msg ul {
+            padding: 0
+        }
+
+        .msg ul li {
+            position: relative;
+            margin-bottom: 10px;
+            min-height: 68px;
+            list-style: none;
+        }
+
+        .chat-mine .chat-user cite i {
+            padding-left: 0;
+            padding-right: 15px;
+            font-style: normal;
+        }
+
+        .chat-user cite i {
+            padding-left: 15px;
+            font-style: normal;
+        }
+
+        .msg .chat-user {
+            left: auto;
+            right: 3px;
+        }
+
+        .chat-text, .chat-user {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        .chat-mine .chat-text {
+            margin-left: 0;
+            text-align: left;
+            background-color: #5FB878;
+            color: #fff;
+        }
+
+        .chat-text {
+            position: relative;
+            line-height: 22px;
+            margin-top: 25px;
+            padding: 8px 15px;
+            background-color: #e2e2e2;
+            border-radius: 3px;
+            color: #333;
+            word-break: break-all;
+            max-width: 462px \9;
+        }
+
+        .chat-mine .chat-user cite {
+            left: auto;
+            right: 15px;
+            text-align: right;
+        }
+
+        .chat-user cite {
+            position: absolute;
+            left: 10px;
+            top: -2px;
+            width: 500px;
+            line-height: 24px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #999;
+            text-align: left;
+            font-style: normal;
+        }
+
+        .msg-box-left {
+            height: 750px;
+            border-right: 1px solid #E7E7E7;
+            padding: 3px;
+        }
+
+        .msg-box-left .msg {
+            height: 690px;
+            overflow: scroll;
+            overflow-x: hidden
+        }
+
+        .chat-footer {
+            border-top: 1px solid #F1F1F1;
+            padding-top: 8px;
+        }
+
+        .chat-con {
+            display: none;
+        }
+
+        .msg-box-left .chat-con.show {
+            display: block;
+        }
+
+        .last-seen {
+            text-align: center;
+            color: #ccc;
+        }
+
+        .last-seen span {
+            position: relative;
+        }
+
+        .last-seen span::before, .last-seen span::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 1px;
+            background-color: #a1a6af;
+            top: 50%;
+            margin-top: -0.5px;
+        }
+
+        .last-seen span::before {
+            right: -80px;
+        }
+
+        .last-seen span::after {
+            left: -80px;
+        }
+
+        .unread {
+            color: #f05300;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header">EOS Chat Group</div>
+
+        <div class="chat-main d-flex position-relative">
+
+
+            <div class="friend-list"
+                 style="width: 150px;border-right: 1px solid #E7E7E7; height: 800px">
+
+            </div>
+            <div class="content col d-flex"
+                 style="height: 800px;flex-flow:row wrap; padding-left: 0; padding-right: 0px">
+
+                <div class="msg-box-left col">
+                    <div class="chat-con" uname="">
+                        <div class="msg">
+                            <ul>
+                                <li class="chat-mine">
+                                    <div class="chat-user"><cite><i>{time}</i>{uname}</cite></div>
+                                    <div class="chat-text">{msg}</div>
+                                </li>
+
+                                <li>
+                                    <div class="chat-user"><cite>{uname}<i>{time}</i></cite></div>
+                                    <div class="chat-text">{msg}</div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="input-group chat-footer" style="margin-top: 5px;">
+                            <textarea class="form-control" style="height:80px;" autofocus></textarea>
+                            <div class="input-group-prepend">
+                                <button class="form-control btn btn-primary send" style="height: 80px">
+                                    Send
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Tpl(html) {
+        this.html = html;
+        this.asign = (tag, val) => {
+            this.html = this.html.replace(new RegExp("\\{" + tag + "\\}", 'g'), val);
+            return this;
+        };
+    }
+
+    function fdate(date) {
+        var y = date.getFullYear(),
+            m = date.getMonth() + 1,
+            d = date.getDate();
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + date.toTimeString().substr(0, 8);
+    }
+
+    jQuery.expr[":"].text = jQuery.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return jQuery(elem).text().toLowerCase() == arg;
+        };
+    });
+
+    var API_HOST = 'https://eos-studio.api.dfuse.dev';
+    var tpl = {
+        con: null,
+        chatItemMine: null,
+        chatItem: null
+    };
+    var groupsData = [];
+    var GroupSelected = -1;
+
+    function init() {
+        tpl.chatItemMine = $('.chat-con ul li')[0].outerHTML;
+        tpl.chatItem = $('.chat-con ul li')[1].outerHTML;
+        $('.chat-con ul li').remove();
+        tpl.con = $('.chat-con')[0].outerHTML;
+        $('.chat-con').remove();
+
+        var GetDataUrl = API_HOST + '/v1/chain/get_table_rows';
+
+        $.ajax({
+            type: "POST",
+            url: GetDataUrl,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({
+                "code": "chatgroup",
+                "scope": "chatgroup",
+                "table": "msggroup",
+                "json": true,
+                "limit": 100,
+            }),
+            dataType: "json",
+            success: function (data) {
+                $.each(data.rows, function (i, a) {
+                    $(".friend-list").append('<div class="user-item" ><span class="uname">' + a.gname + '</span><span class="unread"></span></div>');
+                    $('.msg-box-left').append(tpl.con);
+
+                    $('.friend-list .user-item:last').attr('gname', a.gname);
+                    $('.friend-list .user-item:last').attr('gid', a.id);
+                    $('.msg-box-left .chat-con:last').attr('gid', a.id);
+
+                });
+
+                $('.friend-list .user-item:first').click();
+
+            },
+            error: function (message) {
+                console.log(message);
+            }
+        });
+    }
+
+    function getMsgFromGroup(gid) {
+
+        var GetDataUrl = API_HOST + '/v1/chain/get_table_rows';
+
+        var upperBound = bigInt(gid).shiftLeft(32).or(0xffffffff);
+        var hasItem = false;
+        for (var i in groupsData) {
+            if (parseInt(groupsData[i].gid) === parseInt(gid)) {
+                upperBound = groupsData[i].upperBound;
+                hasItem = true;
+                break;
+            }
+        }
+
+        if (!hasItem) {
+            groupsData.push({gid: gid, upperBound: upperBound});
+        }
+
+        $.ajax({
+            type: "POST",
+            url: GetDataUrl,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({
+                "code": "chatgroup",
+                "scope": "chatgroup",
+                "table": "messages",
+                "json": true,
+                "limit": 100,
+                "lower_bound": bigInt(gid).shiftLeft(32).toString(),
+                "upper_bound": (upperBound - 1).toString(),
+                "index_position": 2,
+                "key_type": "i64"
+            }),
+            dataType: "json",
+            success: function (data) {
+
+
+                var con = $('.chat-con[gid="' + gid + '"]');
+
+
+                $.each(data.rows.reverse(), function (i, a) {
+
+                    if (parseInt(a.time) < upperBound) {
+                        upperBound = parseInt(a.time);
+                    }
+
+                    var newModel = new Tpl(tpl.chatItem);
+
+                    newModel.asign('time', fdate(new Date((0xffffffff - bigInt(a.time).and(0xffffffff) + 1) * 1000)))
+                        .asign('msg', a.text)
+                        .asign('uname', a.user);
+
+
+                    con.find('.msg ul').append(newModel.html);
+
+                    con.find('.msg').scrollTop(con.find('.msg')[0].scrollHeight);
+
+                });
+
+                for (var i in groupsData) {
+                    if (parseInt(groupsData[i].gid) === parseInt(gid)) {
+                        groupsData[i].upperBound = upperBound;
+                    }
+                }
+
+                keepAlive();
+
+            },
+            error: function (message) {
+
+            }
+        });
+
+
+    }
+
+    var KeepAliveTimer = null;
+
+    function keepAlive() {
+
+        clearTimeout(KeepAliveTimer);
+
+        KeepAliveTimer = setTimeout(function () {
+
+            if (GroupSelected < 0) {
+                return keepAlive();
+            }
+
+            getMsgFromGroup(GroupSelected);
+
+            keepAlive();
+
+        }, 5 * 1000);
+
+    }
+
+
+    $(".friend-list").on('click', '.user-item', function () {
+
+        if ($(this).hasClass('selected')) return;
+
+        $(".user-item").removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('.unread').text('');
+
+        var gid = $(this).attr('gid');
+
+
+        $('.chat-con').removeClass('show');
+
+        var con = $('.chat-con[gid="' + gid + '"]');
+
+        con.addClass('show');
+
+        GroupSelected = parseInt(gid);
+
+        getMsgFromGroup(GroupSelected);
+    });
+
+    init();
+
+</script>
+
+</body>
+</html>
