@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Group</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-modal/2.2.6/css/bootstrap-modal.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap-modal/2.2.6/js/bootstrap-modalmanager.min.js"></script>
     <style>
         .s-item {
             width: 208px;
@@ -104,7 +101,7 @@
             border-radius: 3px;
             color: #333;
             word-break: break-all;
-            max-width: 462px \9;
+            max-width: 462px;
         }
 
         .chat-mine .chat-user cite {
@@ -183,12 +180,11 @@
             font-weight: bold;
         }
     </style>
-
 </head>
 <body>
 
 
-<div class="container">
+<div class="container-fluid" style="min-width: 650px; max-width: 1000px">
     <div class="card" style="margin-top: 10px;">
         <div class="card-header">EOS Chat Group
             <button class="btn btn-sm btn-outline-primary float-right hosts">API Host</button>
@@ -220,14 +216,22 @@
                             </ul>
 
                         </div>
-                        <div class="input-group chat-footer" style="margin-top: 5px;">
-                            <textarea class="form-control" style="height:80px;" autofocus></textarea>
-                            <div class="input-group-prepend">
-                                <button class="form-control btn btn-primary send" style="height: 80px">
-                                    Send
-                                </button>
+                        <div class="chat-footer" style="margin-top: 5px;">
 
+                            <div class="chat-login" style="text-align: center; margin-top: 15px;">
+                                <button class="btn btn-primary sct-login">Scatter Login</button>
                             </div>
+
+                            <div class="chat-input fade input-group ">
+                                <textarea class="form-control" style="height:80px;" autofocus></textarea>
+                                <div class="input-group-prepend">
+                                    <button class="form-control btn btn-primary send" style="height: 80px">
+                                        PUSH
+                                    </button>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -256,11 +260,14 @@
                     <select class="btn-secondary custom-select"
                             style="width: auto; padding: 0.1rem 1.75rem 0.1rem 0.4rem; font-size: 0.875rem; height: auto;">
                         <optgroup label="Endpoints">
+
+                            <option value="https://api.eosdetroit.io:443">https://api.eosdetroit.io:443</option>
+
+                            <option value="https://api.eosmetal.io:18890">https://api.eosmetal.io:18890</option>
+                            <option value="https://eos.greymass.com:443">https://eos.greymass.com:443</option>
+
                             <option value="https://api.eosnewyork.io">https://api.eosnewyork.io</option>
                             <option value="https://api.eosio.cr:80">https://api.eosio.cr:80</option>
-                            <option value="https://api.eosdetroit.io:443">https://api.eosdetroit.io:443</option>
-                            <option value="https://eos.greymass.com:443">https://eos.greymass.com:443</option>
-                            <option value="https://api.eosmetal.io:18890">https://api.eosmetal.io:18890</option>
                             <option value="http://api.hkeos.com:80">http://api.hkeos.com:80</option>
                             <option value="https://eosapi.blockmatrix.network:443">
                                 https://eosapi.blockmatrix.network:443
@@ -295,235 +302,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    function Tpl(html) {
-        this.html = html;
-        this.asign = (tag, val) => {
-            this.html = this.html.replace(new RegExp("\\{" + tag + "\\}", 'g'), val);
-            return this;
-        };
-    }
-
-    function fdate(date) {
-        var y = date.getFullYear(),
-            m = date.getMonth() + 1,
-            d = date.getDate();
-        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + date.toTimeString().substr(0, 8);
-    }
-
-    jQuery.expr[":"].text = jQuery.expr.createPseudo(function (arg) {
-        return function (elem) {
-            return jQuery(elem).text().toLowerCase() == arg;
-        };
-    });
-
-    var API_HOST = $('#shostModal select').val();
-    var CONTRACT = 'chatingroomx';
-    var tpl = {
-        con: null,
-        chatItemMine: null,
-        chatItem: null
-    };
-    var groupsData = [];
-    var GroupSelected = -1;
-
-    function init() {
-        tpl.chatItemMine = $('.chat-con ul li')[0].outerHTML;
-        tpl.chatItem = $('.chat-con ul li')[1].outerHTML;
-        $('.chat-con ul li').remove();
-        tpl.con = $('.chat-con')[0].outerHTML;
-        $('.chat-con').remove();
-
-        var GetDataUrl = API_HOST + '/v1/chain/get_table_rows';
-
-        $.ajax({
-            type: "POST",
-            url: GetDataUrl,
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify({
-                "code": CONTRACT,
-                "scope": CONTRACT,
-                "table": "msggroup",
-                "json": true,
-                "limit": 100,
-            }),
-            dataType: "json",
-            success: function (data) {
-                $.each(data.rows, function (i, a) {
-                    $(".friend-list").append('<div class="user-item" ><span class="uname">' + a.gname + '</span><span class="unread"></span></div>');
-                    $('.msg-box-left').append(tpl.con);
-
-                    $('.friend-list .user-item:last').attr('gname', a.gname);
-                    $('.friend-list .user-item:last').attr('gid', a.id);
-                    $('.msg-box-left .chat-con:last').attr('gid', a.id);
-
-                });
-
-                $('.friend-list .user-item:first').click();
-
-            },
-            error: function (message) {
-                console.log(message);
-            }
-        });
-    }
-
-    function getMsgFromGroup(gid) {
-
-        var GetDataUrl = API_HOST + '/v1/chain/get_table_rows';
-
-        var upperBound = bigInt(gid).shiftLeft(32).or(0xffffffff);
-        var hasItem = false;
-        for (var i in groupsData) {
-            if (parseInt(groupsData[i].gid) === parseInt(gid)) {
-                upperBound = groupsData[i].upperBound;
-                hasItem = true;
-                break;
-            }
-        }
-
-        if (!hasItem) {
-            groupsData.push({gid: gid, upperBound: upperBound});
-        }
-
-        $.ajax({
-            type: "POST",
-            url: GetDataUrl,
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify({
-                "code": CONTRACT,
-                "scope": CONTRACT,
-                "table": "messages",
-                "json": true,
-                "limit": 100,
-                "lower_bound": bigInt(gid).shiftLeft(32).toString(),
-                "upper_bound": (upperBound - 1).toString(),
-                "index_position": 2,
-                "key_type": "i64"
-            }),
-            dataType: "json",
-            success: function (data) {
-
-
-                var con = $('.chat-con[gid="' + gid + '"]');
-
-
-                $.each(data.rows.reverse(), function (i, a) {
-
-                    if (parseInt(a.time) < upperBound) {
-                        upperBound = parseInt(a.time);
-                    }
-
-                    var newModel = new Tpl(tpl.chatItem);
-
-                    newModel.asign('time', fdate(new Date((0xffffffff - bigInt(a.time).and(0xffffffff) + 1) * 1000)))
-                        .asign('msg', a.text)
-                        .asign('uname', a.user);
-
-
-                    con.find('.msg ul').append(newModel.html);
-
-                    con.find('.msg').scrollTop(con.find('.msg')[0].scrollHeight);
-
-                });
-
-                for (var i in groupsData) {
-                    if (parseInt(groupsData[i].gid) === parseInt(gid)) {
-                        groupsData[i].upperBound = upperBound;
-                    }
-                }
-
-                keepAlive();
-
-            },
-            error: function (message) {
-
-            }
-        });
-
-
-    }
-
-    var KeepAliveTimer = null;
-
-    function keepAlive() {
-
-        clearTimeout(KeepAliveTimer);
-
-        KeepAliveTimer = setTimeout(function () {
-
-            if (GroupSelected < 0) {
-                return keepAlive();
-            }
-
-            getMsgFromGroup(GroupSelected);
-
-            keepAlive();
-
-        }, 5 * 1000);
-
-    }
-
-    $(".hosts").click(function () {
-        $('#shostModal').modal('show').addClass('show');
-    });
-
-    $('#shostModal .btn-primary').click(function () {
-
-        API_HOST = $('#shostModal select').val();
-
-        var GetDataUrl = API_HOST + '/v1/chain/get_table_rows';
-
-        $('#shostModal .state').removeClass('badge-danger').removeClass('badge-success').text('Testing...');
-
-        $.ajax({
-            type: "POST",
-            url: GetDataUrl,
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify({
-                "code": CONTRACT,
-                "scope": CONTRACT,
-                "table": "msggroup",
-                "json": true,
-                "limit": 100,
-            }),
-            dataType: "json",
-            success: function (data) {
-                $('#shostModal .state').addClass('badge-success').text('OK');
-            },
-            error: function (message) {
-                $('#shostModal .state').addClass('badge-danger').text('ERROR');
-
-            }
-        });
-
-    });
-
-    $(".friend-list").on('click', '.user-item', function () {
-
-        if ($(this).hasClass('selected')) return;
-
-        $(".user-item").removeClass('selected');
-        $(this).addClass('selected');
-        $(this).find('.unread').text('');
-
-        var gid = $(this).attr('gid');
-
-
-        $('.chat-con').removeClass('show');
-
-        var con = $('.chat-con[gid="' + gid + '"]');
-
-        con.addClass('show');
-
-        GroupSelected = parseInt(gid);
-
-        getMsgFromGroup(GroupSelected);
-    });
-
-    init();
-
-</script>
+<script src="chat.js" type="text/javascript"></script>
 
 </body>
 </html>
