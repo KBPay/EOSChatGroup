@@ -186,6 +186,7 @@
 <div class="container-fluid" style="min-width: 650px; max-width: 1000px">
     <div class="card" style="margin-top: 10px;">
         <div class="card-header">EOS Chat Group
+            <button class="btn btn-sm btn-outline-info float-right logout" style="margin-left: 8px; display: none">Logout</button>
             <button class="btn btn-sm btn-outline-primary float-right hosts">API Host</button>
         </div>
 
@@ -256,36 +257,19 @@
             <div class="modal-body">
                 <div>
                     API Endpoint:
-                    <select class="btn-secondary custom-select"
-                            style="width: auto; padding: 0.1rem 1.75rem 0.1rem 0.4rem; font-size: 0.875rem; height: auto;">
+                    <select class="btn-secondary custom-select" style="width: auto; padding: 0.1rem 1.75rem 0.1rem 0.4rem; font-size: 0.875rem; height: auto;">
                         <optgroup label="Endpoints">
-
+                            <option value="https://eos.newdex.one">https://eos.newdex.one</option>
                             <option value="https://api.eosdetroit.io:443">https://api.eosdetroit.io:443</option>
-
-                            <option value="https://api.eosmetal.io:18890">https://api.eosmetal.io:18890</option>
-                            <option value="https://eos.greymass.com:443">https://eos.greymass.com:443</option>
-
                             <option value="https://api.eosnewyork.io">https://api.eosnewyork.io</option>
-                            <option value="https://api.eosio.cr:80">https://api.eosio.cr:80</option>
-                            <option value="http://api.hkeos.com:80">http://api.hkeos.com:80</option>
                             <option value="https://eosapi.blockmatrix.network:443">
                                 https://eosapi.blockmatrix.network:443
                             </option>
-                            <option value="https://fn.eossweden.se:443">https://fn.eossweden.se:443</option>
-                            <option value="http://api.blockgenicbp.com:8888">http://api.blockgenicbp.com:8888</option>
-                            <option value="http://mainnet.eoscalgary.io:80">http://mainnet.eoscalgary.io:80</option>
                             <option value="https://node1.eosphere.io">https://node1.eosphere.io</option>
                             <option value="https://node2.eosphere.io">https://node2.eosphere.io</option>
-                            <option value="https://eos.saltblock.io">https://eos.saltblock.io</option>
-                            <option value="https://node2.liquideos.com:8883">https://node2.liquideos.com:8883</option>
-                            <option value="http://node2.liquideos.com:8888">http://node2.liquideos.com:8888</option>
-                            <option value="https://api.eosuk.io:443">https://api.eosuk.io:443</option>
                             <option value="http://api1.eosdublin.io:80">http://api1.eosdublin.io:80</option>
-                            <option value="http://api.eosvibes.io:80">http://api.eosvibes.io:80</option>
-                            <option value="http://api.cypherglass.com:8888">http://api.cypherglass.com:8888</option>
                             <option value="https://api.cypherglass.com:443">https://api.cypherglass.com:443</option>
                             <option value="http://bp.cryptolions.io:8888">http://bp.cryptolions.io:8888</option>
-                            <option value="https://eu1.eosdac.io:443">https://eu1.eosdac.io:443</option>
                             <option value="https://api.main.alohaeos.com:443">https://api.main.alohaeos.com:443</option>
                         </optgroup>
                     </select>
@@ -295,6 +279,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info">Check All</button>
                 <button type="button" class="btn btn-primary">Check And Set</button>
             </div>
         </div>
@@ -302,6 +287,5 @@
 </div>
 
 <script src="chat.js" type="text/javascript"></script>
-
 </body>
 </html>
