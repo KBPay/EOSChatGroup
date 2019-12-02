@@ -90,6 +90,17 @@
             background-color: #5FB878;
             color: #fff;
         }
+        .chat-admin .chat-user cite{
+            color: #0066CC;
+            font-weight: bold;
+        }
+        .chat-admin .chat-user cite i{
+            font-weight: normal;
+        }
+        .chat-admin .chat-text {
+            background-color: #6666CC;
+            color: #fff;
+        }
 
         .chat-text {
             position: relative;
@@ -108,6 +119,7 @@
             right: 15px;
             text-align: right;
         }
+
 
         .chat-user cite {
             position: absolute;
@@ -209,7 +221,7 @@
                                     <div class="chat-text">{msg}</div>
                                 </li>
 
-                                <li>
+                                <li class="{admin}">
                                     <div class="chat-user"><cite>{uname}<i>{time}</i></cite></div>
                                     <div class="chat-text">{msg}</div>
                                 </li>
