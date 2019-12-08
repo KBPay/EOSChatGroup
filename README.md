@@ -5,10 +5,11 @@
 
 
 # 格式请统一标准,如下:
+```
 path: xx.mp4
 size: 1357385422
 md5: a323e063782fe56cc1a298ec26b9db0a
 sha: ec6260eb43f562cda103f15858f4319820bc5cac
-
+```
 
 ChatGroup Base On EOS
